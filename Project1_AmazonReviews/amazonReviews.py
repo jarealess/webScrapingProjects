@@ -8,9 +8,12 @@ import socks
 import socket
 import pandas as pd
 
+## For using Tor to change my IP Address
 socks.set_default_proxy(socks.SOCKS5, "localhost", 9150)
 socket.socket = socks.socksocket
 
+
+## Defining headers
 headers = {
 'authority': 'www.amazon.com',
 'pragma': 'no-cache',
@@ -28,11 +31,13 @@ headers = {
 pageUrl = 'https://www.amazon.com/-/es/port%C3%A1til-pulgadas-Altavoces-ordenador-tel%C3%A9fono/product-reviews/B088TLQR3K/ref=cm_cr_getr_d_paging_btm_prev_1?ie=UTF8&reviewerType=all_reviews&pageNumber=1'
 session = requests.session()
 
-
+## Lists
 nextPagination = []
 reviews = []
 comments = []
 stars = []
+
+## Function to scrape data from a given Url
 def getPaginations(pageUrl,session):
     try:
         url = session.get(pageUrl, headers=headers)
@@ -61,7 +66,7 @@ def getPaginations(pageUrl,session):
     except:
         print('page missing')
 
-
+## Printing a dataframe
 getPaginations(pageUrl,session)
 tbAmazonReviews = {'Title':reviews, 'Body': comments, 'Rating':stars}
 tbAmazonReviewsDf = pd.DataFrame(tbAmazonReviews, columns=['Title','Body', 'Rating'])
