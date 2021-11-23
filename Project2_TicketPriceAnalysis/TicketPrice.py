@@ -26,6 +26,7 @@ browser = webdriver.Chrome(executable_path='C:\webdriver\chromedriver.exe', opti
 
 
 ## inputs
+## se ingresa el código IATA del origen y destino y una fecha. 
 source='BOG'
 destination='MDE'
 date='2021-11-24'
@@ -34,6 +35,7 @@ browser.get(url)
 
 
 ## loading more flights
+## Esta sección sirve para hacer clic en el botón (ver más resultados)
 for i in range(5):
     try:
         WebDriverWait(browser, 5).until(
@@ -59,6 +61,7 @@ fLinks = bs.find_all('a', {'class':'booking-link'})
 
 ## filling lists
 minVal = min(len(horario),len(prices),len(airline),len(flightType),len(fLinks))
+
 listHorario = []
 listPrices = []
 listAirlines = []
@@ -76,10 +79,10 @@ for i in range(minVal):
 
     #prices 
     p1 = prices[i].find('span', {'class':'price-text'})
-    listPrices.append(p1.text)
+    listPrices.append(float(p1.text[2:].replace('.','')))
 
     # airlines
-    listAirlines.append(airline[i]) 
+    listAirlines.append(airline[i].text) 
 
     # stops
     f1 = flightType[i].find('span', {'class':'stops-text'})
@@ -98,6 +101,7 @@ for i in range(minVal):
 dictFlights = {'Aerolinea':listAirlines, 'Horario':listHorario, 'Precio':listPrices, 'Paradas':listStops, 'Links':listLinks}
 dfFlights = pd.DataFrame(dictFlights, columns=['Aerolinea','Horario','Precio','Paradas','Links'])
 print(dfFlights)
+
 
 
 
