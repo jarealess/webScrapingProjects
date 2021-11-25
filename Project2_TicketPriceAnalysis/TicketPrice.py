@@ -29,7 +29,7 @@ browser = webdriver.Chrome(executable_path='C:\webdriver\chromedriver.exe', opti
 ## se ingresa el código IATA del origen y destino y una fecha. 
 source='BOG'
 destination='MDE'
-date='2021-11-24'
+date='2021-11-26'
 url=("https://www.kayak.com.co/flights/{0}-{1}/{2}?sort=bestflight_a".format(source,destination,date))
 browser.get(url)
 
@@ -100,7 +100,10 @@ for i in range(minVal):
 ## dataframe
 dictFlights = {'Aerolinea':listAirlines, 'Horario':listHorario, 'Precio':listPrices, 'Paradas':listStops, 'Links':listLinks}
 dfFlights = pd.DataFrame(dictFlights, columns=['Aerolinea','Horario','Precio','Paradas','Links'])
-print(dfFlights)
+dfFlights.drop_duplicates()
+
+## 15 vuelos más baratos
+print(dfFlights.sort_values(by='Precio', ascending=True).iloc[:15])
 
 
 
