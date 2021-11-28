@@ -27,9 +27,9 @@ browser = webdriver.Chrome(executable_path='C:\webdriver\chromedriver.exe', opti
 
 ## inputs
 ## se ingresa el código IATA del origen y destino y una fecha. 
-source='BOG'
-destination='MDE'
-date='2021-11-26'
+source='MDE'
+destination='ADZ'
+date='2022-01-23'
 url=("https://www.kayak.com.co/flights/{0}-{1}/{2}?sort=bestflight_a".format(source,destination,date))
 browser.get(url)
 
@@ -104,3 +104,6 @@ dfFlights.drop_duplicates()
 
 ## 15 vuelos más baratos
 print(dfFlights.sort_values(by='Precio', ascending=True).iloc[:15])
+
+# csv
+dfFlights.to_csv('cheapestFlights.csv', encoding='utf-8')
