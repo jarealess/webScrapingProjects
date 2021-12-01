@@ -1,14 +1,3 @@
-## In this proyect I mean to scrape data abour player statistics this season from English Premier League webpage.
-## I'm going to gather information about goals, passes, minutes played, wins, losses and other information one could use to do good analysis. 
-
-
-# TOOLS
-# The two web scraping libraries that will help you smooth this project’s implementation is BeautifulSoup and Requests of the Python 
-# programming language. They allow easy access to websites and parsing of HTML pages.
-
-
-
-######## librerías
 import time
 import requests
 import selenium
@@ -68,67 +57,47 @@ def currentSeason(browser):
 
 #------------------------------ lists to fill in with needed information ------------------------------------- 
 
-def funcGettingStats():
-    playerNames = []
-    playerStats = []
-    
-    while True:
-
-        try:
-            WebDriverWait(browser, 3).until(
-                        EC.presence_of_element_located((By.XPATH,'//*[@id="mainContent"]/div[2]/div/div[2]/div[1]/div[3]/div[2]')))
-
-            arrow = browser.find_element_by_xpath('//*[@id="mainContent"]/div[2]/div/div[2]/div[1]/div[3]/div[2]')
-            browser.execute_script("arguments[0].click();",arrow)
-        except StopIteration:
-            break
-        
-        bs = BeautifulSoup(browser.page_source, 'html.parser')
-        Names = bs.find_all('a', {'class':'playerName'})
-        stats_ = bs.find_all('td', {'class':'mainStat text-centre'})
-        
-
-        if Names[-1].find('strong').text in playerNames:
-            break
-
-        for i in range(len(Names)):
-            playerNames.append(Names[i].find('strong').text)
-            playerStats.append(stats_[i].text) 
-
-
-
-    df1 = pd.DataFrame({"Names": playerNames, 'MainStat':playerStats}, columns=['Names', 'MainStat'])
-    
-    return df1
-
-
-
-
-## ----------------------------------Execution -------------------------------------------------------------
 
 funcHandleCookies(browser)
 currentSeason(browser)
 
-dfGoals = funcGettingStats()
+playerNames = []
+playerStats = []
+count=0
+while True:
 
+    try:
+        WebDriverWait(browser, 3).until(
+                     EC.presence_of_element_located((By.XPATH,'//*[@id="mainContent"]/div[2]/div/div[2]/div[1]/div[3]/div[2]')))
+
+        arrow = browser.find_element_by_xpath('//*[@id="mainContent"]/div[2]/div/div[2]/div[1]/div[3]/div[2]')
+        browser.execute_script("arguments[0].click();",arrow)
+    except StopIteration:
+       break
+    
+    bs = BeautifulSoup(browser.page_source, 'html.parser')
+    Names = bs.find_all('a', {'class':'playerName'})
+    stats_ = bs.find_all('td', {'class':'mainStat text-centre'})
+    
+
+    if Names[-1].find('strong').text in playerNames:
+        break
+
+    for i in range(len(Names)):
+        playerNames.append(Names[i].find('strong').text)
+        playerStats.append(stats_[i].text) 
+
+
+
+
+
+
+dictGoals = {"Names": playerNames, 'MainStat':playerStats}
+dfGoals = pd.DataFrame(dictGoals, columns=['Names', 'MainStat'])
 print(dfGoals)
 
 
 browser.close()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
