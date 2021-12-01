@@ -25,12 +25,12 @@ from selenium.webdriver.support import expected_conditions as EC
 
 playerUrl = 'https://www.premierleague.com/stats/top/players/goals'
 
+
 option = webdriver.ChromeOptions()
 option.add_experimental_option("excludeSwitches", ['enable-automation'])
 browser = webdriver.Chrome(executable_path='C:\webdriver\chromedriver.exe', options=option) ## path al chrome driver
 browser.get(playerUrl)
 time.sleep(5)
-
 
 
 #------------------------------------- 'accepting' cookies popup  ------------------------------------- 
@@ -71,7 +71,7 @@ def currentSeason(browser):
 def funcGettingStats():
     playerNames = []
     playerStats = []
-    
+
     while True:
 
         try:
@@ -81,7 +81,7 @@ def funcGettingStats():
             arrow = browser.find_element_by_xpath('//*[@id="mainContent"]/div[2]/div/div[2]/div[1]/div[3]/div[2]')
             browser.execute_script("arguments[0].click();",arrow)
         except StopIteration:
-            break
+         print('Not located')
         
         bs = BeautifulSoup(browser.page_source, 'html.parser')
         Names = bs.find_all('a', {'class':'playerName'})
@@ -98,6 +98,8 @@ def funcGettingStats():
 
 
     df1 = pd.DataFrame({"Names": playerNames, 'MainStat':playerStats}, columns=['Names', 'MainStat'])
+
+    browser.close()
     
     return df1
 
@@ -114,7 +116,7 @@ dfGoals = funcGettingStats()
 print(dfGoals)
 
 
-browser.close()
+
 
 
 
