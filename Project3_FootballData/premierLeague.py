@@ -82,10 +82,10 @@ def funcGettingStats(browser, statType):
     while True:
 
         try:
-            WebDriverWait(browser, 3).until(
+            WebDriverWait(browser, 7).until(
                         EC.presence_of_element_located((By.XPATH,'//*[@id="mainContent"]/div[2]/div/div[2]/div[1]/div[3]/div[2]')))
 
-            time.sleep(2)
+            time.sleep(1)
             arrow = browser.find_element_by_xpath('//*[@id="mainContent"]/div[2]/div/div[2]/div[1]/div[3]/div[2]')
             browser.execute_script("arguments[0].click();",arrow)
         except:
@@ -126,23 +126,23 @@ browser = funcBrowser('https://www.premierleague.com/stats/top/players/appearanc
 dfAppearance = funcGettingStats(browser, 'Appearances')
 
 ## goals
-browser = funcBrowser('https://www.premierleague.com/stats/top/players/goals')
-dfGoals = funcGettingStats(browser, 'Goals')
+browser1 = funcBrowser('https://www.premierleague.com/stats/top/players/goals')
+dfGoals = funcGettingStats(browser1, 'Goals')
 
 
 ## assists
-browser = funcBrowser('https://www.premierleague.com/stats/top/players/goal_assist')
-dfAssists = funcGettingStats(browser, 'Assists')
+browser2 = funcBrowser('https://www.premierleague.com/stats/top/players/goal_assist')
+dfAssists = funcGettingStats(browser2, 'Assists')
 
 
 ## Shots
-browser = funcBrowser('https://www.premierleague.com/stats/top/players/total_scoring_att')
-dfShots = funcGettingStats(browser, 'Shots')
+browser3 = funcBrowser('https://www.premierleague.com/stats/top/players/total_scoring_att')
+dfShots = funcGettingStats(browser3, 'Shots')
 
 
 #yellow cards
-browser = funcBrowser('https://www.premierleague.com/stats/top/players/yellow_card')
-dfYellow = funcGettingStats(browser, 'YellowCards')
+browser4 = funcBrowser('https://www.premierleague.com/stats/top/players/yellow_card')
+dfYellow = funcGettingStats(browser4, 'YellowCards')
 
 
 df1 = pd.merge(dfAppearance, dfGoals, on='Names', how='left')
