@@ -1,0 +1,97 @@
+Nombre del aeropuerto;IATA;OACI;Ciudad / ubicación;Departamento
+Aeropuerto Internacional El Edén;AXM;SKAR;Armenia / La Tebaida;Quindío
+Aeropuerto Internacional Ernesto Cortissoz;BAQ;SKBQ;Barranquilla / Soledad;Atlántico
+Aeropuerto Internacional El Dorado;BOG;SKBO;Bogotá;Distrito Capital
+Aeropuerto Internacional Palonegro ;BGA;SKBG;Bucaramanga / Lebrija;Santander
+Aeropuerto Internacional Alfonso Bonilla Aragón ;CLO;SKCL;Cali / Palmira;Valle del Cauca
+Aeropuerto Internacional Rafael Núñez ;CTG;SKCG;Cartagena;Bolívar
+Aeropuerto Internacional Camilo Daza;CUC;SKCC;Cúcuta;Norte de Santander
+Aeropuerto Internacional Alfredo Vásquez Cobo;LET;SKLT;Leticia;Amazonas
+Aeropuerto Internacional José María Córdova;MDE;SKRG;Medellín / Rionegro;Antioquia
+Aeropuerto Internacional Matecaña;PEI;SKPE;Pereira;Risaralda
+Aeropuerto Internacional Almirante Padilla;RCH;SKRH;Riohacha;La Guajira
+Aeropuerto Internacional Gustavo Rojas Pinilla;ADZ;SKSP;San Andrés;San Andrés y Providencia
+Aeropuerto Internacional Simón Bolívar ;SMR;SKSM;Santa Marta;Magdalena
+Aeropuerto Antonio Roldán Betancourt;APO;SKLC;Apartadó / Carepa;Antioquia
+Aeropuerto Santiago Pérez;AUC;SKUC;Arauca;Arauca
+Aeropuerto Yariguíes;EJA;SKEJ;Barrancabermeja;Santander
+Terminal Puente Aéreo;BOG;SKBO;Bogotá;Distrito Capital
+Aeropuerto Gustavo Artunduaga;FLA;SKFL;Florencia;Caquetá
+Aeropuerto Perales;IBE;SKIB;Ibagué;Tolima
+Aeropuerto de La Nubia;MZL;SKMZ;Manizales;Caldas
+Aeropuerto Olaya Herrera;EOH;SKMD;Medellín;Antioquia
+Aeropuerto Los Garzones;MTR;SKMR;Montería;Córdoba
+Aeropuerto Benito Salas;NVA;SKNV;Neiva;Huila
+Aeropuerto Antonio Nariño;PSO;SKPS;Pasto / Chachagüí;Nariño
+Aeropuerto Guillermo León Valencia;PPN;SKPP;Popayán;Cauca
+Aeropuerto El Embrujo;PVA;SKPV;Providencia;San Andrés y Providencia
+Aeropuerto Tres de Mayo;PUU;SKAS;Puerto Asís;Putumayo
+Aeropuerto El Caraño;UIB;SKUI;Quibdó;Chocó
+Aeropuerto La Florida;TCO;SKCO;Tumaco;Nariño
+Aeropuerto Alfonso López Pumarejo;VUP;SKVP;Valledupar;Cesar
+Aeropuerto Vanguardia;VVC;SKVV;Villavicencio;Meta
+Aeropuerto El Alcaraván;EYP;SKYP;Yopal;Casanare
+Aeropuerto Alcides Fernández;ACD;SKAD;Acandí;Chocó
+Aeropuerto de Araracuara;ACR;SKAC;Araracuara (Solano);Caquetá
+Aeropuerto José Celestino Mutis;BSC;SKBS;Bahía Solano;Chocó
+Aeropuerto Gerardo Tobar López;BUN;SKBU;Buenaventura;Valle del Cauca
+Aeropuerto Juan H. White;CAQ;SKCU;Caucasia;Antioquia
+Aeropuerto de Capurganá;CPB;SKCA;Capurganá;Chocó
+Aeropuerto Mandinga;COG;SKCD;Condoto;Chocó
+Aeropuerto Cumaribo;PCE;;Cumaribo;Vichada
+Aeropuerto El Tomin;EBG;SKEB;El Bagre;Antioquia
+Aeropuerto Santiago Vila;GIR;SKGI;Girardot / Flandes;Cundinamarca / Tolima
+Aeropuerto Juan Casiano;GPI;SKGP;Guapi;Cauca
+Aeropuerto San Luis;IPI;SKIP;Ipiales / Aldana;Nariño
+Aeropuerto de La Chorrera;LCR;;La Chorrera;Amazonas
+Aeropuerto de La Macarena;LMC;;La Macarena;Meta
+Aeropuerto Jorge Isaacs;MCJ;SKLM;Maicao;La Guajira
+Aeropuerto Fabio Alberto León Bentley;MVP;SKMU;Mitú;Vaupés
+Aeropuerto Reyes Murillo;NQU;SKNQ;Nuquí;Chocó
+Aeropuerto Aguas Claras;OCV;SKOC;Ocaña;Norte de Santander
+Aeropuerto Contador;PTX;SKPI;Pitalito;Huila
+Aeropuerto Puerto Bolívar;URA;SKPB;Puerto Bolívar / Uribia;La Guajira
+Aeropuerto César Gaviria Trujillo;PDA;SKPD;Puerto Inírida;Guainía
+Aeropuerto Germán Olano;PCR;SKPC;Puerto Carreño;Vichada
+Aeropuerto Caucaya;LQM;SKLG;Puerto Leguízamo;Putumayo
+Aeropuerto de Otú;OTU;SKOT;Remedios;Antioquia
+Aeropuerto Jorge Enrique González;SJE;SKSJ;San José del Guaviare;Guaviare
+Aeropuerto Eduardo Falla Solano;SVI;SKSV;San Vicente del Caguán;Caquetá
+Aeropuerto Los Colonizadores;RVE;SKSA;Saravena;Arauca
+Aeropuerto Las Brujas;CZU;SKCZ;Sincelejo / Corozal;Sucre
+Aeropuerto Alberto Lleras Camargo;SOX;SKSO;Sogamoso;Boyacá
+Aeropuerto Gabriel Vargas Santos;TME;SKTM;Tame;Arauca
+Aeropuerto Golfo de Morrosquillo;TLU;SKTL;Tolú;Sucre
+Aeropuerto de Villa Garzón;VGZ;SKVG;Villa Garzón;Putumayo
+Aeropuerto Heriberto Gil Martínez;ULQ;SKUL;Tuluá;Valle del Cauca
+Aeropuerto Guaymaral;GYM;SKGY;Bogotá D. C. / Chía;Cundinamarca
+Aeropuerto de Juanchaco;;;Buenaventura;Valle del Cauca
+Aeropuerto La Arrobleda;CTO;SK-138;Santander de quilichao;Cauca
+Aeropuerto Santa Ana;CRC;SKGO;Cartago;Valle del Cauca
+Aeropuerto Jaime Ortís Betancur;IGO;SKIG;Chigorodó;Antioquia
+Aeropuerto Cravo Norte;RAV;SKCN;Cravo Norte;Arauca
+Aeropuerto Guillermo Gaviria Correa;;;Frontino;Antioquia
+Aeropuerto Baracoa de Magangué;MGN;SKMG;Magangué;Bolívar
+Aeropuerto La Majayura;MCJ;SKAO;Maicao;La Guajira
+Aeropuerto Internacional del Café;;;Manizales / Palestina;Caldas
+Aeropuerto Mariquita;MQU;SKQU;Mariquita;Tolima
+Aeropuerto El Pindo;MTB;SKML;Montelíbano;Córdoba
+Aeropuerto de Necoclí;NCI;SKNC;Necoclí;Antioquia
+Aeropuerto Juan José Rondón;PYA;SKPA;Paipa;Boyacá
+Aeropuerto de Pizarro;;;Pizarro;Chocó
+Aeropuerto Morelia;PGT;SKPG;Puerto Gaitán;Meta
+Aeropuerto de Puerto Rico;PCC;;Puerto Rico;Caquetá
+Aeropuerto El Triunfo;;SK-415;Puerto Triunfo;Antioquia
+Aeropuerto Los Pozos;SGL;SKSG;San Gil;Santander
+Aeropuerto San Pedro de Urabá;NPD;SK-021;San Pedro de Urabá;Antioquia
+Aeropuerto Gustavo Rojas Pinilla;;SKTJ;Tunja;Boyacá
+Aeropuerto de Timbiquí;;;Timbiquí;Cauca
+Aeropuerto Gonzalo Mejía;TRB;SKTU;Turbo;Antioquia
+Aeropuerto Militar CATAM;BOG;;Bogotá;Distrito Capital
+Base Aérea Larandia;;SKLR;Florencia;Caquetá
+Base Aérea de Madrid;;SKMA;Madrid;Cundinamarca
+Base Aérea de Marandúa;MQZ;SKUA;Marandúa;Guaviare
+Base Aérea de Tolemaida;;;Melgar;Tolima
+Base Aérea Germán Olano (Palanquero);PAL;SKPQ;Puerto Salgar;Cundinamarca
+Base Aérea de Tres Esquinas;TQS;SKTQ;Solano;Caquetá
+Base Aérea Marco Fidel Suárez;;SKGB;Santiago de Cali;Valle del Cauca
