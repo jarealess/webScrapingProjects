@@ -27,10 +27,10 @@ browser = webdriver.Chrome(executable_path='C:\webdriver\chromedriver.exe', opti
 
 #---------------- function to get flights from KAYAK
 
-def findFlights(source,destination,date):
+def findFlights(source,destination,i_date, f_date):
 
 
-    url=("https://www.kayak.com.co/flights/{0}-{1}/{2}?sort=bestflight_a".format(source,destination,date))
+    url=("https://www.kayak.com.co/flights/{0}-{1}/{2}/{3}?sort=bestflight_a".format(source,destination,i_date, f_date))
     browser.get(url)
 
 
@@ -105,10 +105,10 @@ def findFlights(source,destination,date):
 
 
 
-dfFlights = findFlights('MDE','ADZ','2022-01-23')
+dfFlights = findFlights('MDE','ADZ','2022-01-23', '2022-01-27')
 
 ## 15 vuelos más baratos
 print(dfFlights.iloc[:15])
 
 # csv
-dfFlights.to_csv('cheapestFlights.csv', encoding='utf-8', index=False)
+dfFlights.to_csv('cheapestFlights.csv', encoding='utf-8', index=False, sep=';')
