@@ -12,58 +12,73 @@ import os
 import time
 from bs4 import BeautifulSoup
 from selenium import webdriver
+import requests
 
 
 
-##----- config browser  ---> se cambia dirección IP  -----------------------------
-# torexe = os.popen(r'C:\Users\PERSONAL\Desktop\Tor Browser\Browser\TorBrowser\Tor\tor.exe')
-# PROXY = "socks5://localhost:9050" # IP:PORT or HOST:PORT
-options = webdriver.ChromeOptions()
-options.add_argument('--headless')
-options.add_argument('--disable-gpu')
-options.add_experimental_option("excludeSwitches", ['enable-automation']) # options.add_argument('--proxy-server=%s' % PROXY)
-driver = webdriver.Chrome(chrome_options=options, executable_path=r'C:\webdriver\chromedriver.exe')
-
-
-driver.get("https://coinmarketcap.com/?page=")
+# driver.get("https://www.coingecko.com/en")
 time.sleep(5)
 
-
-
+pageUrl = requests.get('https://www.coingecko.com/en?page=1')
 
 #--------------- obtenemos la información de cada criptomoneda
 
-bs = BeautifulSoup(driver.page_source, 'lxml')
+bs = BeautifulSoup(pageUrl.text, 'lxml')
 trS = bs.find('tbody').find_all('tr')
-
-# Buttons = bs.find('ul', {'class':'pagination'}).find_all('li', {'class':'page'})
-
-# print(Buttons[-1].find('a').text)
-
-for tr in trS:
-    print(tr)
-    print('')
-
-    # coin1 = tr.find('div', {'class':'sc-1teo54s-1'})
-    # coin2= tr.find('p', {'class':'iworPT'})
-    # if coin1 is not None:    
-    #     print(coin1.text)
-    # else:
-    #     continue
-
-# coins = driver.find_elements_by_class_name('sc-1eb5slv-0.iworPT')
-
-# print(len(coins))
-
-# for coin in coins:
-#     print(coin.text)
+LastPage = bs.find_all('li', class_='page-item')[-2].text
 
 
+coinList = []
+sNameList = []
+pricesList = []
+oneHourRate = []
+oneDayRate = []
+sevenDaysRate = []
+oneDayVolume = []
+MktCap = []
 
 
-time.sleep(2)
+for i in range(1,10):#range(1,int(LastPage)):
+    
+    url = ('https://www.coingecko.com/en?page='+str(i))
+    pageUrl = requests.get(url)
+    trS = BeautifulSoup(pageUrl.text, 'lxml').find('tbody').find_all('tr')
 
-driver.close()
+
+    for tr in trS:
+        coinList.append(tr.find('a', class_='tw-hidden lg:tw-flex font-bold tw-items-center tw-justify-between').text.replace('\n',''))
+        sNameList.append(tr.find('span', class_='tw-hidden d-lg-inline font-normal text-3xs ml-2').text.replace('\n','') ) 
+        pricesList.append(tr.find('td', class_='td-price').find('span').text.replace('\n','').replace('$','').replace(',',''))  
+        MktCap.append(tr.find('td', class_='td-market_cap').find('span').text.replace('\n','').replace('$','').replace(',','')) 
+
+
+        oneH = tr.find('td', class_='td-change1h').find('span')
+        oneDay = tr.find('td', class_='td-change24h').find('span')
+        sevenDay = tr.find('td', class_='td-change7d').find('span')
+        oneDayV = tr.find('td', class_='td-liquidity_score').find('span')
+
+        if None not in [oneH,oneDay,sevenDay,oneDayV]:
+            oneHourRate.append(oneH.text.replace('\n','').replace('%',''))
+            oneDayRate.append(oneDay.text.replace('\n','').replace('%',''))
+            sevenDaysRate.append(sevenDay.text.replace('\n','').replace('%',''))
+            oneDayVolume.append(oneDayV.text.replace('\n','').replace('$','').replace(',',''))
+        else: 
+            oneHourRate.append('')
+            oneDayRate.append('')
+            sevenDaysRate.append('')
+            oneDayVolume.append('')
+    
+    print(i)
+    
+
+
+print(MktCap)
+print(len(MktCap))
+
+
+
+
+
 
 
 
