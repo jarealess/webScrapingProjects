@@ -1,11 +1,4 @@
-# Equity Research involves thorough analysis and understanding of a company’s financial documents like balance sheet, profit and loss statement, 
-# cash flow statements, etc., of the past few years. That helps portfolio managers to be sure of the investments in a company of their interest.
 
-# Most companies have an Investor Relation section on their website with their annual financial statements. For this project, you can refer to 
-# Walt Disney’s Investor Relation webpage and scrape the PDFs available to understand how the company is evolving financially.
-
-# For this project, we recommend the popular package of Python’s programming language, Beautiful Soup. Additionally, since you must extract 
-# content from the PDFs, you will have to use another package, PyPDF2, that has the PdfFileReader class.
 
 # library: https://pypi.org/project/pdfplumber/
 import pdfplumber

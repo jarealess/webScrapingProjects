@@ -34,9 +34,26 @@ for i in range(4,11):
     
     table1.append(listDit)
 
-print('tabla, página 33')
+print('tabla PDF 1, página 33')
 print(pd.DataFrame(table1[1::], columns=table1[0]))
 print('\n', '\n')
+
+
+
+# pdf 2  -- Probamos nuevamente con un PDF en donde la tabla esté adecuadamente definida
+# descargado de: https://www.ciriondo.com/PDFs/17%20Tablas%20de%20conversion/Tablas%20de%20Conversion.pdf
+
+
+pdf2 = pdfplumber.open('TablasConversion.pdf')
+table2 = pdf2.pages[0].extract_tables()[0]
+
+print('tabla PDF 2, página 1')
+print(pd.DataFrame(table2[1::], columns=table2[0]))  ## Sí imprime cada tabla del archivo
+
+
+
+
+
 
 
 
