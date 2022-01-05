@@ -6,19 +6,21 @@
 
 
 # PAGE: https://www.webmd.com/drugs/2/alpha/l
+# Page spanish: https://medlineplus.gov/spanish/druginfo/drug_Aa.html
 
 
 
 ### TUTORIALES SCRAPY
 
-# https://www.youtube.com/watch?v=S_znhijDygM&ab_channel=FrankAndrade
-
 # https://www.youtube.com/watch?v=L-9X9dRpJh0&ab_channel=AsperosGeek
 
 # https://www.youtube.com/watch?v=5o9lucMaQLc&ab_channel=edureka%21
 
+# https://www.youtube.com/watch?v=S_znhijDygM&ab_channel=FrankAndrade
+
 # https://www.youtube.com/watch?v=ALizgnSFTwQ&ab_channel=TraversyMedia
 
+# https://www.youtube.com/watch?v=s4jtkzHhLzY&t=1002s&ab_channel=JohnWatsonRooney
 
 
 

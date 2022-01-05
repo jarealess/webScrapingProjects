@@ -42,8 +42,29 @@ USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, lik
 > > scrapy crawl quotes2 -o quotes.csv
 	-- lo guarda como csv
 
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+OTRA FORMA DE CREAR LOS SPIDERS
+
+> scrapy genspider <nombre_spider> <url (sin protocolo http:// y sin el último /)>
+	--- esto crea el spider con la plantilla básica
 
 
+-------------------------------------------------------------------------------------------------------------------------------------------
+SE PUEDE ABRIR EL SHELL SOLO CON EL COMANDO
+> scrapy shell
+
+> r = scrapy.Request(url)
+
+> fetch(r)   
+	--- estas 3 líneas hacen lo mismo que --> scrapy shell <url>
+
+> response.xpath().get() 
+	--- para obtener un elemento (como un título)
+
+
+> response.xpath().getall()
+	--- para obtener varios elementos 
  
 
 
