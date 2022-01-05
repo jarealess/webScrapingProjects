@@ -65,7 +65,15 @@ SE PUEDE ABRIR EL SHELL SOLO CON EL COMANDO
 
 > response.xpath().getall()
 	--- para obtener varios elementos 
- 
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+PUEDO OBTENER LOS ATRIBUTOS, POR EJEMPLO 'HREF'
+
+> products = response.css('div.product-item-info')
+
+> products.css('a.product-item-link').attrib['href']
+ 	--- me muestra el link
 
 
 
