@@ -1,5 +1,6 @@
 import scrapy
 
+# https://www.youtube.com/watch?v=S_znhijDygM&ab_channel=FrankAndrade
 
 class WorldometerSpider(scrapy.Spider):
     name = 'worldometer'
