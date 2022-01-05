@@ -1,0 +1,56 @@
+COMANDOS
+
+> virtualenv venv
+> venv\Scripts\activate
+> pip install requirements.txt
+> scrapy version
+> scrapy startproject <nombre>
+	--- esto nos crea una carpeta con el nombre indicado y subcarpetas con lo necesario para scrapy
+
+> scrapy shell "https://www.dane.gov.co/index.php/indicadores-economicos"
+	--- para abrir la consola de scrapy 
+
+> response.xpath('//section[contains(@class, "article-content clearfix") and @itemprop="articleBody"]//table//h2/strong/text()').getall()
+	--- para obtener titulos de los indicadores
+
+> response.xpath('//section[contains(@class, "article-content clearfix") and @itemprop="articleBody"]//table//h1/text()').getall()
+	--- para obtener valor de los indicadores
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+TUVE QUE PONER LAS SIGUIENTES LÍNEAS EN EL ARCHIVO settings.py PARA QUE LO ANTERIOR FUNCIONARA
+
+HTTPERROR_ALLOWED_CODES  =[404]
+USER_AGENT = 'quotesbot (+http://www.yourdomain.com)'
+USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/34.0.1847.131 Safari/537.36"
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+
+--> Lo anterior era para probar que funcionara el código. Para hacerlo "automático", se crea un spider dentro de la carpeta spiders (con .py)
+
+--> Se crea el código en el interior (ver econoIndicators.py) 
+
+--> Se le debe asignar un nombre al spider (ver econoIndicators.py)
+
+--> Se ejecuta desde el virtual environment con: scrapy crawl <nombre spider>
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+> scrapy crawl quotes2 -o quotes.json
+	-- con esto se guarda la salida del código en un .json (se hizo para spider2/quotes2) 
+
+> > scrapy crawl quotes2 -o quotes.csv
+	-- lo guarda como csv
+
+
+
+ 
+
+
+
+
+
+
+
+
+
