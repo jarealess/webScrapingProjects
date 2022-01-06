@@ -1,11 +1,14 @@
 import scrapy
-import numpy
-
-
+import os
 
 class DrugrecommendscrapeSpider(scrapy.Spider):
     name = 'DrugRecommendScrape'
     start_urls = ['https://medlineplus.gov/spanish/druginfo/drug_Aa.html']
+
+
+    # deleting file
+    if os.path.exists('DrugsInformation.csv'):
+        os.remove('DrugsInformation.csv')
 
 
     # Para guardar la salida directamente a un CSV
