@@ -18,8 +18,6 @@
 
 # https://www.youtube.com/watch?v=S_znhijDygM&ab_channel=FrankAndrade
 
-# https://www.youtube.com/watch?v=ALizgnSFTwQ&ab_channel=TraversyMedia
-
 # https://www.youtube.com/watch?v=s4jtkzHhLzY&t=1002s&ab_channel=JohnWatsonRooney
 
 
