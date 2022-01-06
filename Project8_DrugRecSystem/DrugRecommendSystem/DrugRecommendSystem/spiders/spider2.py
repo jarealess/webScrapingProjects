@@ -5,7 +5,7 @@ from scrapy.linkextractors import LinkExtractor
 class getDrugsInfoSpider(scrapy.Spider):
     name = 'getDrugsInfo'
 
-    start_urls = ['https://medlineplus.gov/spanish/druginfo/meds/a601168-es.html']
+    start_urls = ['https://medlineplus.gov/spanish/druginfo/drug_Aa.html']
 
 
     # def parse(self, response):
@@ -15,10 +15,13 @@ class getDrugsInfoSpider(scrapy.Spider):
     #        print(link.url)
         
     def parse(self, response):
-        try:
-            texto = {'text': response.xpath('//section/div[contains(@id,"why")]/div[2]/p/text()').get()
-            }
-        except:
-            print('Not description')
+        iniciales = response.xpath('//ul[contains(@class, "alpha-links")]/li')
 
-        return texto
+        pagination = []
+        for letra in iniciales[1:]:
+            pagination.append(f'{"https://medlineplus.gov/spanish/druginfo/"}{letra.xpath("./a").attrib["href"]}')
+            
+        yield {
+            
+            'link': pagination
+        }

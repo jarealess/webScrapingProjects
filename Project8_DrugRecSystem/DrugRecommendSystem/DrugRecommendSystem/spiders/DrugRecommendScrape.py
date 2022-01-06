@@ -20,6 +20,8 @@ class DrugrecommendscrapeSpider(scrapy.Spider):
 
     ## getting drugs names and links
     def parse(self, response):
+
+        # drugs
         indice = response.css('ul#index') 
         drugs = indice.xpath('./li')
         
@@ -27,6 +29,17 @@ class DrugrecommendscrapeSpider(scrapy.Spider):
             if drug.xpath("./a").attrib["href"] is not None:
                 info_url = f'{"https://medlineplus.gov/spanish/druginfo"}{drug.xpath("./a").attrib["href"][1:]}'
                 yield response.follow(info_url, callback=self.parse_sublinks)
+        
+
+        # code to navigate thought pages 
+        iniciales = response.xpath('//ul[contains(@class, "alpha-links")]/li') #enlaces
+        pagination = []
+        for letra in iniciales[1:]:
+            pagination.append(f'{"https://medlineplus.gov/spanish/druginfo/"}{letra.xpath("./a").attrib["href"]}')
+
+        for page in pagination:
+            yield response.follow(page, callback=self.parse)
+
 
 
     # se obtiene información directamente de la página del medicamento 
