@@ -8,19 +8,41 @@
 # PAGE: https://www.webmd.com/drugs/2/alpha/l
 # Page spanish: https://medlineplus.gov/spanish/druginfo/drug_Aa.html
 
+import pandas as pd
+
+## ---------------------------------  reading drugs information  -----------------------------------------------------------
+
+df = pd.read_csv('DrugRecommendSystem\DrugsInformation.csv', sep=";", encoding="latin-1")
 
 
-### TUTORIALES SCRAPY
+## --------------------------------- getting list of symptons ------------------------------------------------------------------
 
-# https://www.youtube.com/watch?v=L-9X9dRpJh0&ab_channel=AsperosGeek
-
-# https://www.youtube.com/watch?v=5o9lucMaQLc&ab_channel=edureka%21
-
-# https://www.youtube.com/watch?v=S_znhijDygM&ab_channel=FrankAndrade
-
-# https://www.youtube.com/watch?v=s4jtkzHhLzY&t=1002s&ab_channel=JohnWatsonRooney
+print("")
+symptons = input("Ingrese síntomas, separados por coma si son más de uno: ")
+symptonsList = symptons.split(',')
 
 
+## --------------------------------- filtering dataframe ------------------------------------------------------------------
+FilterDrugs = df.loc[df.Sintomas.str.contains(symptonsList[0], case=False, regex=True)==True]
+for sympton in symptonsList:
+    FilterDrugs = FilterDrugs.loc[FilterDrugs.Sintomas.str.contains(sympton, case=False, regex=True)==True]
+
+
+## --------------------------------- printing -----------------------------------------------------------------------------------
+
+if FilterDrugs.empty:
+    print("""
+            ---> No hay medicamentos en la base que ataquen todos los síntomas
+            ---> Intente con otras palabras u otra combinación de síntomas
+            
+            """)
+else:
+    print(""" 
+              Listado de medicamentos acontinuación. 
+              Se recomienda ir al enlace para consultar contraindicaciones.
+
+            """)
+    print(FilterDrugs.loc[:, ['Medicamento', 'Enlace']].to_string(index=False))  
 
 
 
