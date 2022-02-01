@@ -23,8 +23,8 @@ browser = webdriver.Chrome(executable_path='C:\webdriver\chromedriver.exe', opti
 ##---------------------------------- inputs   --------------------------------------------------
 
 destino = 'ADZ'   # iata
-fechaIngreso = '2022-01-10'
-fechaSalida = '2022-01-15'
+fechaIngreso = '2022-02-10'
+fechaSalida = '2022-02-15'
 n0_people = ['2','0']  # [adultos, niños]
 no_rooms = '1'
 
