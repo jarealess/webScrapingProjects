@@ -13,3 +13,17 @@ data from any website. The exciting feature of Scrapy is that it offers an async
 following next set of tasks before they are complete
 
 
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------
+>>>>>>  SPIDER JobPortalEE
+Se construyó el primer spider para bajar información de la página de ElEmpleo.com
+Al ejecutar el spider se deben ingresar 3 parámetros: 
+	- jobSearched: trabajo que se quiere buscar
+	- MaxResults: cantidad máxima de resultados que se quieren obtener
+	- keyWords: Palabras clave para filtrar los títulos
+
+--->>>  scrapy crawl JobPortalEE -a jobarg=datos -a MaxResults=30
+
+-----------------------------------------------------------------------------------------------------------------------------------------------
+
