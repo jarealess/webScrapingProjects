@@ -1,59 +1,54 @@
 import scrapy
-import time
-from selenium import webdriver
-
 
 
 class JobportalSpider(scrapy.Spider):
     name = 'JobPortalCT'
-    #allowed_domains = ['www.elempleo.com/co/ofertas-empleo/?trabajo=']
-    
+    counter = 1
 
     def start_requests(self):
 
         ## link
-        url = 'http://www.elempleo.com/co/ofertas-empleo/?trabajo='+self.jobarg
+        url = f'https://www.computrabajo.com.co/trabajo-de-{self.jobSearched}?by=publicationtime&p=1'
 
         yield scrapy.Request(url=url, callback=self.parse)
 
-#'Publicado 27 Ene 2022
+
     def parse(self, response):
 
-        # config Selenium
-        option = webdriver.ChromeOptions()
-        option.add_experimental_option("excludeSwitches", ['enable-automation'])
-        option.add_argument("headless")
-        browser = webdriver.Chrome(executable_path='C:\webdriver\chromedriver.exe', options=option)
-        browser.get('http://www.elempleo.com/co/ofertas-empleo/?trabajo='+self.jobarg)
-        response = browser.page_source
 
-    ##nextButton = browser.find_element_by_xpath('/html/body/div[8]/div[4]/div[1]/div[4]/div/nav/ul/li[8]/a')
+        schema = 'https://www.computrabajo.com.co'
 
+        if self.counter <= int(self.MaxResults): 
         ## encontramos los empleos en la página
-        jobsEE = response.xpath('//div[contains(@class, "result-list")]//div[contains(@class, "result-item")]//ul')
+            jobsCT = response.xpath('//article[contains(@class, "box_border")]')
 
-        i = 0
-        for job in jobsEE:
-            
-            ## matching job Title Parameters
-            jobTitle = job.xpath('./li[1]/h2/a/text()').get().replace('\r\n','').strip()
-            isMatch = [True for x in getattr(self, 'jobarg2').split(',') if x in jobTitle]
+            for job in jobsCT: 
+                        
+                ## matching job Title Parameters
+                jobTitle = job.xpath('.//h1/a/text()').get().replace('\r\n','').strip()
+                isMatch = [True for x in getattr(self, 'keyWords').split(',') if x in jobTitle.split(' ')]
 
-            ## Matching recent days
-            publishDate = job.xpath('./li[3]/span[3]').get()[120:180].replace('\r\n','').strip()
+                ## Company
+                if job.xpath('.//p[1]/a/text()').get() is None:
+                    Company = 'Unknown'
+                else:
+                    Company = job.xpath('.//p[1]/a/text()').get().replace('\r\n','').strip()
 
-            if True in isMatch:
-                i+=1 
-                yield {f'Post{i}': jobTitle,
-                        'Company': job.xpath('./li[2]/h3/span[2]/span/text()').get().replace('\r\n','').strip(),
-                        'Salary':job.xpath('./li[3]/span[1]/text()').get().replace('\r\n','').strip(),
-                        'City':job.xpath('./li[3]/span[2]/span/span[1]').get()[120:170].replace('\r\n','').strip(),
-                        'Date': publishDate
-                    }
+                ## getting items
+                if self.counter <= int(self.MaxResults) and True in isMatch:
+           
+                    yield {f'Post{self.counter}': jobTitle
+                            ,'Company': Company
+                            ,'Page':response.css('a.b_next.buildLink').attrib['data-path'][-2:]
+                            #'City':job.xpath('//p[1]/text()').get().replace('\r\n','').strip()
+                            ,'Date': job.xpath('.//p[3]/text()').get().replace('\r\n','').strip()
+                            ,'Enlace':f"{schema}{job.xpath('.//h1/a').attrib['href']}"
+                        }
+                    
+                    self.counter+=1 
 
-
-            ## following page search
-            next_page = ''
-            if next_page is not None:
+            # following page search
+                next_page = response.css('a.b_next.buildLink').attrib['data-path']
+                if next_page is not None:
                     yield response.follow(next_page, callback=self.parse)
 

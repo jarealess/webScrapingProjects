@@ -26,4 +26,12 @@ Al ejecutar el spider se deben ingresar 3 parámetros:
 --->>>  scrapy crawl JobPortalEE -a jobSearched=datos -a MaxResults=30 -a keyWords=analista,sql,bi
 
 -----------------------------------------------------------------------------------------------------------------------------------------------
+>>>>>>  SPIDER JobPortalCT
+Se construyó el segundo spider para bajar información de la página de Computrabajo
+Al ejecutar el spider se deben ingresar 3 parámetros: 
+	- jobSearched: trabajo que se quiere buscar
+	- MaxResults: cantidad máxima de resultados que se quieren obtener
+	- keyWords: Palabras clave para filtrar los títulos, separadas por coma. 
+
+--->>>  scrapy crawl JobPortalCT -a jobSearched=datos -a MaxResults=30 -a keyWords=analista,sql,bi
 

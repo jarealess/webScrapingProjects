@@ -50,7 +50,7 @@ class JobportalSpider(scrapy.Spider):
 
                 # ---------- Palabras clave
                 jobTitle = job.find('a', {'class':'text-ellipsis js-offer-title'}).text.replace('\n','').strip()
-                isMatch = [True for x in getattr(self, 'keyWords').split(',') if x in jobTitle]
+                isMatch = [True for x in getattr(self, 'keyWords').split(',') if x in jobTitle.split(' ')]
 
                 # ----------- Información
                 if True in isMatch:
