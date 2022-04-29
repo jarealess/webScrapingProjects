@@ -11,7 +11,6 @@
 import time
 import pandas as pd
 from bs4 import BeautifulSoup
-import selenium
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait 
@@ -105,7 +104,7 @@ def findFlights(source,destination,i_date, f_date):
 
 
 
-dfFlights = findFlights('MDE','ADZ','2022-01-23', '2022-01-27')
+dfFlights = findFlights('MDE','ADZ','2022-03-23', '2022-03-27')
 
 ## 15 vuelos más baratos
 print(dfFlights.iloc[:15])
