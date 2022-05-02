@@ -9,14 +9,17 @@
 
 ##--------- libraries
 import time
-import pandas as pd
 from bs4 import BeautifulSoup
+from pymysql import MySQLError
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait 
 from selenium.webdriver.support import expected_conditions as EC
+import os
+import csv
+import json
 
-
+mainPath = r"C:\Users\PERSONAL\Desktop\WEBSCRAPPING\webScrapingProjects"
 
 ##--------- config browser
 option = webdriver.ChromeOptions()
@@ -26,10 +29,10 @@ browser = webdriver.Chrome(executable_path='C:\webdriver\chromedriver.exe', opti
 
 #---------------- function to get flights from KAYAK
 
-def findFlights(source,destination,i_date, f_date):
+def findFlights(source,destination,s_date, e_date):
 
 
-    url=("https://www.kayak.com.co/flights/{0}-{1}/{2}/{3}?sort=bestflight_a".format(source,destination,i_date, f_date))
+    url=(f'https://www.kayak.com.co/flights/{source}-{destination}/{s_date}/{e_date}?sort=bestflight_a')
     browser.get(url)
 
 
@@ -43,6 +46,7 @@ def findFlights(source,destination,i_date, f_date):
             time.sleep(7)
             element = browser.find_element_by_class_name('moreButton')
             browser.execute_script("arguments[0].click();",element)
+            print('Cargando más vuelos...')
             time.sleep(3)
         except:
             print(f"Element not located in iteration {i}")
@@ -52,13 +56,10 @@ def findFlights(source,destination,i_date, f_date):
     bs = BeautifulSoup(browser.page_source, 'html.parser')
     details = bs.find_all('div', {'class':'Base-Results-HorizonResult'})
 
-    listHorario = []
-    listPrices = []
-    listAirlines = []
-    listStops = []
-    listLinks = []
-
+    list_Vuelos = []
     for i in range(len(details)):
+        #### En este almacenaremos info en cada iteración
+        dictTickets = {}  
 
         ##--- schedule
         horario = details[i].find('div', {'class':'section times'})
@@ -66,16 +67,16 @@ def findFlights(source,destination,i_date, f_date):
         h2 = horario.find('span', {'class':'arrival-time base-time'})
 
         if h1 is not None:
-            listHorario.append('{0}-{1}'.format(h1.text,h2.text).encode('utf-8').decode())
+            dictTickets['horario'] = ('{0}-{1}'.format(h1.text,h2.text).encode('utf-8').decode())
 
         #--- prices 
         prices = details[i].find('div', {'class':'multibook-dropdown'})
         p1 = prices.find('span', {'class':'price-text'})
-        listPrices.append(float(p1.text[2:].replace('.','')))
+        dictTickets['precio'] = (float(p1.text[2:].replace('.','')))
 
         #--- airlines
         airline = details[i].find('span', {'class':'codeshares-airline-names'})
-        listAirlines.append(airline.text) 
+        dictTickets['aerolinea'] = (airline.text) 
 
         #--- stops
         flightType = details[i].find('div', {'class':'section stops'})
@@ -83,31 +84,36 @@ def findFlights(source,destination,i_date, f_date):
         f2 = flightType.find('span', {'class':'js-layover'})
 
         if f2 is not None:
-            listStops.append(f2.text.strip())
+            dictTickets['paradas'] = (f2.text.strip())
         else:
-            listStops.append(f1.text.replace('\n',''))
+            dictTickets['paradas'] = (f1.text.replace('\n',''))
 
         ##--- links
         fLinks = details[i].find('a', {'class':'booking-link'})
-        listLinks.append('https://www.kayak.com.co{0}'.format(fLinks.attrs['href']))
+        dictTickets['enlace'] = ('https://www.kayak.com.co{0}'.format(fLinks.attrs['href']))
+
+        ## Se inserta diccionario en lista
+        list_Vuelos.append(dictTickets)
+        
 
 
     browser.close()
     
+
+    ##  almacenamos la información en un archivo .csv
+    if not os.path.exists(mainPath+'\Project2_TicketPriceAnalysis\data'):
+        os.mkdir(mainPath+'\Project2_TicketPriceAnalysis\data')
+
+    filename = rf'\\vuelos{source}_{destination}_{s_date}_{e_date}.csv'
+    with open(mainPath+'\Project2_TicketPriceAnalysis\data'+filename, 'w', newline='') as vuelosKayak:
+            writer = csv.DictWriter(vuelosKayak, fieldnames=list(list_Vuelos[0].keys()))
+            writer.writeheader()
+            writer.writerows(list_Vuelos)
     ## dataframe
-    dictFlights = {'Aerolinea':listAirlines, 'Horario':listHorario, 'Precio':listPrices, 'Escalas':listStops, 'Links':listLinks}
-    dfFlights = pd.DataFrame(dictFlights, columns=['Aerolinea','Horario','Precio','Escalas','Links'])
-    dfFlights = dfFlights.sort_values(by='Precio', ascending=True).drop_duplicates()
-
-    return dfFlights
+    return list_Vuelos
 
 
+listFlights = sorted(findFlights('MDE','ADZ','2022-06-01', '2022-06-07'), key=lambda x: x['precio'])
 
-
-dfFlights = findFlights('MDE','ADZ','2022-03-23', '2022-03-27')
-
-## 15 vuelos más baratos
-print(dfFlights.iloc[:15])
-
-# csv
-dfFlights.to_csv('cheapestFlights.csv', encoding='utf-8', index=False, sep=';')
+## 5 vuelos más baratos
+print(json.dumps(listFlights[:5], indent=2))
