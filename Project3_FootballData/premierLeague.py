@@ -10,8 +10,6 @@
 
 ######## librerías
 import time
-import requests
-import selenium
 import pandas as pd
 from bs4 import BeautifulSoup
 from selenium import webdriver
@@ -21,136 +19,112 @@ from selenium.webdriver.support import expected_conditions as EC
 
 
 
-#-------------------------------------  config browser ------------------------------------- 
+class PremierLeagueStats():
 
-webUrl = 'https://www.premierleague.com/stats/top/players/goals'
+    def __init__(self, stat):
+        self.stat = stat   ## estadística a buscar 
 
+    #-------------------------------------  config browser ------------------------------------- 
+    def funcBrowser(self):
+        option = webdriver.ChromeOptions()
+        option.add_experimental_option("excludeSwitches", ['enable-automation'])
+        browser = webdriver.Chrome(executable_path='C:\webdriver\chromedriver.exe', options=option) ## path al chrome driver
+        browser.get(f'https://www.premierleague.com/stats/top/players/{self.stat}')
+        time.sleep(5)
 
-def funcBrowser(webUrl):
-    option = webdriver.ChromeOptions()
-    option.add_experimental_option("excludeSwitches", ['enable-automation'])
-    browser = webdriver.Chrome(executable_path='C:\webdriver\chromedriver.exe', options=option) ## path al chrome driver
-    browser.get(webUrl)
-    time.sleep(5)
-
-    return browser
-
-
-#------------------------------------- 'accepting' cookies popup  ------------------------------------- 
-
-def funcHandleCookies(browser):
-    try:
-        WebDriverWait(browser, 5).until(
-                        EC.presence_of_element_located((By.XPATH, '/html/body/div[1]/div/div/div[1]/div[5]/button[1]')))
-        
-        cookies = browser.find_element_by_xpath('/html/body/div[1]/div/div/div[1]/div[5]/button[1]')
-        browser.execute_script("arguments[0].click();",cookies)
-        time.sleep(3)
-    except:
-        print(f"Cookies Element not located")
+        return browser
 
 
-#------------------------------ finding and clicking to show current season players  ------------------------------------- 
+    #------------------------------------- 'accepting' cookies popup  ------------------------------------- 
 
-def currentSeason(browser):
-    season = browser.find_element_by_xpath('//*[@id="mainContent"]/div[2]/div/div[2]/div[1]/section/div[1]/div[2]')
-    season.click()
-
-    try:
-        WebDriverWait(browser, 4).until(
-                        EC.presence_of_element_located((By.XPATH, '//*[@id="mainContent"]/div[2]/div/div[2]/div[1]/section/div[1]/ul/li[2]')))
-
-        time.sleep(2)
-        season2021 = browser.find_element_by_xpath('//*[@id="mainContent"]/div[2]/div/div[2]/div[1]/section/div[1]/ul/li[2]')
-        browser.execute_script("arguments[0].click();",season2021)
-        time.sleep(3)
-    except:
-        print(f"Element not located")
+    def funcHandleCookies(self,browser):
+        try:
+            WebDriverWait(browser, 5).until(
+                            EC.presence_of_element_located((By.XPATH, '/html/body/div[1]/div/div/div[1]/div[5]/button[1]')))
+            
+            cookies = browser.find_element_by_xpath('/html/body/div[1]/div/div/div[1]/div[5]/button[1]')
+            browser.execute_script("arguments[0].click();",cookies)
+            time.sleep(3)
+        except:
+            print(f"Cookies Element not located")
 
 
+    #------------------------------ finding and clicking to show current season players  ------------------------------------- 
 
-#------------------------------ lists to fill in with needed information ------------------------------------- 
-
-def funcGettingStats(browser, statType):
-
-    funcHandleCookies(browser)  # accept cookies
-    currentSeason(browser)      #select current season
-
-    playerNames = []
-    playerStats = []
-    
-    while True:
+    def currentSeason(self,browser):
+        season = browser.find_element_by_xpath('//*[@id="mainContent"]/div[2]/div/div[2]/div[1]/section/div[1]/div[2]')
+        season.click()
 
         try:
-            WebDriverWait(browser, 7).until(
-                        EC.presence_of_element_located((By.XPATH,'//*[@id="mainContent"]/div[2]/div/div[2]/div[1]/div[3]/div[2]')))
+            WebDriverWait(browser, 4).until(
+                            EC.presence_of_element_located((By.XPATH, '//*[@id="mainContent"]/div[2]/div/div[2]/div[1]/section/div[1]/ul/li[2]')))
 
-            time.sleep(1)
-            arrow = browser.find_element_by_xpath('//*[@id="mainContent"]/div[2]/div/div[2]/div[1]/div[3]/div[2]')
-            browser.execute_script("arguments[0].click();",arrow)
+            time.sleep(2)
+            season2021 = browser.find_element_by_xpath('//*[@id="mainContent"]/div[2]/div/div[2]/div[1]/section/div[1]/ul/li[2]')
+            browser.execute_script("arguments[0].click();",season2021)
+            time.sleep(3)
         except:
-             print('Not located')
+            print(f"Element not located")
+
+
+
+    #------------------------------ lists to fill in with needed information ------------------------------------- 
+
+    def funcGettingStats(self):
+        browser = self.funcBrowser()
+        self.funcHandleCookies(browser)  # accept cookies
+        self.currentSeason(browser)      #select current season
+
+        playerNames = []
+        playerStats = []
         
-        time.sleep(1)
+        while True:
 
-        bs = BeautifulSoup(browser.page_source, 'lxml')
-        Names = bs.find_all('a', {'class':'playerName'})
-        stats_ = bs.find_all('td', {'class':'mainStat text-centre'})
+            ###--------------------- Se extrae info 
+            bs = BeautifulSoup(browser.page_source, 'lxml')
+            Names = bs.find_all('a', {'class':'playerName'})
+            stats_ = bs.find_all('td', {'class':'mainStat text-centre'})
+            
+
+            if Names[-1].find('strong').text in playerNames:
+                break
+
+            for j in range(len(Names)):
+                playerNames.append(Names[j].find('strong').text)
+                playerStats.append(stats_[j].text) 
+            
+            time.sleep(0.5)
+
+
+            ###------------------ Click botón de página siguiente
+            try:
+                WebDriverWait(browser, 7).until(
+                            EC.presence_of_element_located((By.XPATH,'//*[@id="mainContent"]/div[2]/div/div[2]/div[1]/div[3]/div[2]')))
+
+                time.sleep(1)
+                arrow = browser.find_element_by_xpath('//*[@id="mainContent"]/div[2]/div/div[2]/div[1]/div[3]/div[2]')
+                browser.execute_script("arguments[0].click();",arrow)
+            except:
+                print('Not located')
+            
+            time.sleep(1)
+
+        df1 = pd.DataFrame({"Names": playerNames, self.stat:playerStats}, columns=['Names', self.stat])
+
+        browser.close()
         
-
-        if Names[-1].find('strong').text in playerNames:
-            break
-
-        for j in range(len(Names)):
-            playerNames.append(Names[j].find('strong').text)
-            playerStats.append(stats_[j].text) 
-        
-        time.sleep(0.5)
-
-
-
-    df1 = pd.DataFrame({"Names": playerNames, statType:playerStats}, columns=['Names', statType])
-
-    browser.close()
-    
-    return df1
+        return df1
 
 
 
 
 ## ----------------------------------Execution -------------------------------------------------------------
 
+listStats = ['appearances', 'goals', 'goal_assist', 'total_scoring_att', 'yellow_card', 'red_card']
 
 ## Appearances
-browser = funcBrowser('https://www.premierleague.com/stats/top/players/appearances')
-dfAppearance = funcGettingStats(browser, 'Appearances')
-
-## goals
-browser1 = funcBrowser('https://www.premierleague.com/stats/top/players/goals')
-dfGoals = funcGettingStats(browser1, 'Goals')
-
-
-## assists
-browser2 = funcBrowser('https://www.premierleague.com/stats/top/players/goal_assist')
-dfAssists = funcGettingStats(browser2, 'Assists')
-
-
-## Shots
-browser3 = funcBrowser('https://www.premierleague.com/stats/top/players/total_scoring_att')
-dfShots = funcGettingStats(browser3, 'Shots')
-
-
-#yellow cards
-browser4 = funcBrowser('https://www.premierleague.com/stats/top/players/yellow_card')
-dfYellow = funcGettingStats(browser4, 'YellowCards')
-
-
-df1 = pd.merge(dfAppearance, dfGoals, on='Names', how='left')
-df2 = pd.merge(df1, dfAssists, on='Names', how='left')
-df3 = pd.merge(df2, dfShots, on='Names', how='left')
-df4 = pd.merge(df3, dfYellow, on='Names', how='left')
-
-print(df4)
+dfStats = PremierLeagueStats('red_card')
+print(dfStats.funcGettingStats())
 
 
 
