@@ -5,14 +5,13 @@
 import datetime
 import time
 import pandas as pd
-import requests
 from bs4 import BeautifulSoup
-import selenium
 from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait 
-from selenium.webdriver.support import expected_conditions as EC
+import csv
+import os
+import json
 
+mainPath = r"C:\Users\PERSONAL\Desktop\WEBSCRAPPING\webScrapingProjects"
 
 ##--------- config browser
 option = webdriver.ChromeOptions()
@@ -23,8 +22,8 @@ browser = webdriver.Chrome(executable_path='C:\webdriver\chromedriver.exe', opti
 ##---------------------------------- inputs   --------------------------------------------------
 
 destino = 'ADZ'   # iata
-fechaIngreso = '2022-02-10'
-fechaSalida = '2022-02-15'
+fechaIngreso = '2022-06-23'
+fechaSalida = '2022-06-30'
 n0_people = ['2','0']  # [adultos, niños]
 no_rooms = '1'
 
@@ -47,67 +46,68 @@ browser.get(url)
 time.sleep(5)
 
 
-
 #------------------- gathering information --------------------------------------------------
 
-
-
 bs = BeautifulSoup(browser.page_source, 'html.parser')
-pagination = bs.find_all('li', {'class':'ce83a38554'})
+pagination = bs.find_all('li', {'class':'f32a99c8d1'})
 
-#------ lists 
-titles = []
-address = []
-score = []
-_type = []
-Price = []
-taxes = []
-link = []
 
+# ---- inicializamos lista
+Hotel_Pricing = []
 
 # ----- iterating throught pages
-for i in range(len(pagination)):
+for i in range(int(pagination[-1].text)):
 
     # ----- tarjeta de información
     card = bs.find_all('div', {'data-testid':'property-card'})
 
     # ----- datos 
-
     for j in range(len(card)):
-        titles.append(card[j].find('div', {'class':'fde444d7ef'}).text)       # nombre oferta
-        address.append(card[j].find('span', {'data-testid':'address'}).text)  # ciudad
-        _type.append(card[j].find('span', {'class':'_c5d12bf22'}).text)       # apto / habitacion / ...
-        Price.append(card[j].find('span', {'class':'fde444d7ef _e885fdc12'}).text.replace('COP','').replace('.','').strip())
-        taxes.append(card[j].find('div', {'data-testid':'taxes-and-charges'}).text)  # impuestos
-        link.append(card[j].find('a', {'class':'_4310f7077'}).attrs['href'])          # enlace a la oferta
+        ## inicializamos diccionario
+        innerDict = {}
 
+        innerDict['Title'] = (card[j].find('div', {'class':'fcab3ed991'}).text)       # nombre oferta
+        innerDict['Type'] = (card[j].find('span', {'class':'df597226dd'}).text)       # apto / habitacion / ...
+        innerDict['Price'] = (card[j].find('span', {'class':'fcab3ed991'}).text.replace('COP','').replace('.','').strip())
 
         ## --score
-        punts = card[j].find('div', {'class':'_9c5f726ff bd528f9ea6'})   # puntuación dada al lugar
+        punts = card[j].find('div', {'class':'b5cd09854e'})   # puntuación dada al lugar
         if punts is not None:
-          score.append(punts.text)
+          innerDict['Score'] = (punts.text)
         else:
-          score.append('Sin puntos')
+          innerDict['Score'] = 'Sin puntos'
+
+        ## enlace
+        innerDict['Link'] = (card[j].find('a', {'class':'e13098a59f'}).attrs['href'])          # enlace a la oferta
+        
+        ## insertamos en lista
+        Hotel_Pricing.append(innerDict)
 
        
     # -- click on the '>' button
-    arrow = browser.find_element_by_xpath('//*[@id="search_results_table"]/div[1]/div/div/div/div[6]/div/nav/div/div[3]/button/span')
+
+    arrow = browser.find_element_by_class_name('f32a99c8d1.f78c3700d2')
     arrow.click()
     time.sleep(3)
 
-
     # -- next page info
+    
     bs = BeautifulSoup(browser.page_source, 'html.parser')
       
 browser.close()
 
+## --------------- almacenamos la información en un archivo .csv ---------------
 
+if not os.path.exists(mainPath+'\Project4_HotelPricing\data'):
+    os.mkdir(mainPath+'\Project4_HotelPricing\data')
+
+filename = rf'\\hospedajes_{destino}_{fechaIngreso}_{fechaSalida}.csv'
+with open(mainPath+'\Project4_HotelPricing\data'+filename, 'w', newline='') as hotelBooking:
+        writer = csv.DictWriter(hotelBooking, fieldnames=list(Hotel_Pricing[0].keys()))
+        writer.writeheader()
+        writer.writerows(Hotel_Pricing)
 
 # --------------- consolidado de la información   ----------------------------------
 
-df = pd.DataFrame({'Titulos':titles, 'Ciudad':address, 'Puntuacion':score, 
-                        'Tipo':_type, 'Precio':Price, 'Impuesto':taxes, 'Enlace':link}, 
-                    columns=['Titulos','Ciudad','Puntuacion', 'Tipo', 'Precio', 'Impuesto', 'Enlace'])
-
-df.to_csv('hospedaje.csv', index=False, sep=';', encoding='latin-1')
-
+cheapest = sorted(Hotel_Pricing, key=lambda x: (x['Price'], x['Score']))[0:5]
+print(json.dumps(cheapest, indent=2))
