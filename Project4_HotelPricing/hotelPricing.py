@@ -13,20 +13,19 @@ import json
 
 mainPath = r"C:\Users\PERSONAL\Desktop\WEBSCRAPPING\webScrapingProjects"
 
+##---------------------------------- inputs   --------------------------------------------------
+
+destino =  input('Ingrese Ciudad (Iata): ')
+fechaIngreso = input('Fecha de ingreso (yyyy-mm-dd): ')
+fechaSalida = input('Fecha de salida (yyyy-mm-dd): ')
+n0_people = ['2','0']  # [adultos, niños]
+no_rooms = input('Ingrese número de habitaciones: ')
+print('')
+
 ##--------- config browser
 option = webdriver.ChromeOptions()
 option.add_experimental_option("excludeSwitches", ['enable-automation'])
 browser = webdriver.Chrome(executable_path='C:\webdriver\chromedriver.exe', options=option) ## path al chrome driver
-
-
-##---------------------------------- inputs   --------------------------------------------------
-
-destino = 'ADZ'   # iata
-fechaIngreso = '2022-06-23'
-fechaSalida = '2022-06-30'
-n0_people = ['2','0']  # [adultos, niños]
-no_rooms = '1'
-
 
 #------------------- function to split date --------------------------------------------------
 
@@ -91,7 +90,7 @@ for i in range(int(pagination[-1].text)):
     time.sleep(3)
 
     # -- next page info
-    
+
     bs = BeautifulSoup(browser.page_source, 'html.parser')
       
 browser.close()
